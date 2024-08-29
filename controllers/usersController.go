@@ -53,6 +53,7 @@ func Login(c *gin.Context) {
 	}
 
 	//compare passed in password with saved password
+	bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 
 	//Generate a JWT token
 
