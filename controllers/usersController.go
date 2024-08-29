@@ -69,6 +69,10 @@ func Login(c *gin.Context) {
 
 	//sign and get the complete encoded token as a string using the secret
 	tokenString, err := token.SignedString(os.Getenv("SECRET"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Failed to create token."})
+	}
 
 	//return with the user
+	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
