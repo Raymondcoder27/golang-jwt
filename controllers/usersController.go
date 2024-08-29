@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -79,6 +78,11 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": tokenString})
 }
 
-func LoggedIn(c *gin.Context) {
-	fmt.Println("I'm logged in")
+func Validate(c *gin.Context) {
+	// fmt.Println("I'm logged in")
+	user, _ := c.Get("user")
+
+	c.JSON(http.StatusOK, gin.H{
+		"user": user,
+	})
 }
