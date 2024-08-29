@@ -22,6 +22,7 @@ func main() {
 	r := gin.Default()
 	r.GET("/", Hello)
 	r.POST("/create", controllers.Signup)
+	r.POST("/login", controllers.Login)
 	r.Run()
 
 }
