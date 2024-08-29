@@ -2,10 +2,14 @@ package controllers
 
 import (
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/goJwt/initializers"
 	"github.com/goJwt/models"
+	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -38,8 +42,7 @@ func Login(c *gin.Context) {
 		Email    string
 		Password string
 	}
-	err := c.Bind(&body)
-	if err != nil {
+	if c.Bind(&body) != nil {
 		c.JSON(400, gin.H{"message": "Invalid email or password."})
 	}
 
@@ -53,9 +56,19 @@ func Login(c *gin.Context) {
 	}
 
 	//compare passed in password with saved password
-	bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "Failed to hash password"})
+	}
 
 	//Generate a JWT token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": user.ID,
+		"exp": time.Now().Add(time.Hour * 24 * 30).Unix(),
+	})
+
+	//sign and get the complete encoded token as a string using the secret
+	tokenString, err := token.SignedString(os.Getenv("SECRET"))
 
 	//return with the user
 }
