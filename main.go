@@ -10,6 +10,7 @@ import (
 func init() {
 	initializers.LoadEnvVariables()
 	initializers.ConnectToDB()
+	initializers.SyncDatabase()
 }
 func Hello(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Hello"})
