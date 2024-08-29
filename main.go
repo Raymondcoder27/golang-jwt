@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
+	"github.com/goJwt/controllers"
 	"github.com/goJwt/initializers"
 )
 
@@ -20,6 +21,7 @@ func main() {
 
 	r := gin.Default()
 	r.GET("/", Hello)
+	r.POST("/create", controllers.Signup)
 	r.Run()
 
 }
